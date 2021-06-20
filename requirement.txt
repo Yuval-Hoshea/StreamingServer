@@ -1,0 +1,17 @@
+cffi==1.14.5
+numpy
+opencv-python==4.5.1.48
+packaging==20.9
+Pillow==8.2.0
+pycparser==2.20
+pydub==0.25.1
+PyQt5==5.15.4
+PyQt5-Qt5==5.15.2
+PyQt5-sip==12.9.0
+python-dotenv==0.17.1
+requests==2.25.1
+six==1.16.0
+sounddevice==0.4.1
+soupsieve==2.2.1
+tzlocal==2.1
+urllib3==1.26.4
