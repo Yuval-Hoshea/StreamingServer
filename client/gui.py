@@ -35,7 +35,7 @@ class AskingForFrameThread(threading.Thread):
         self.client = client
         self.video_player = video_player
         self.vid_name = vid_name
-        #
+        
         self.__paused = False
         self.__alive = True
 
