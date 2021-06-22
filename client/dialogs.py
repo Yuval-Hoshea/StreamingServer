@@ -1,24 +1,20 @@
-import functools
 import os.path
 import sys
 from typing import Dict
-
 import cv2
-import numpy as np
-from PIL import Image
-from PyQt5.QtWidgets import QDialog, QGridLayout, QPushButton, QLabel, QSizePolicy, QVBoxLayout, QHBoxLayout
-from PyQt5.QtGui import QImage, QPixmap, QIcon
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QHBoxLayout
+from PyQt5.QtGui import QImage, QPixmap
 import image_functions
 
 
 IMAGES_IN_LINE = 3
+TITLE_IMAGE = "title.jpg"
 
 
 def get_title_qimage() -> QImage:
     # get the path of the title image
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    image_path = os.path.join(current_dir, "title.jpg")
+    image_path = os.path.join(current_dir, TITLE_IMAGE)
     # get the image and convert to QImage
     img_arr = cv2.imread(image_path)
     q_img = image_functions.convert_numpy_array_to_qimage(img_arr)
@@ -60,6 +56,7 @@ class VideoDialog(QDialog):
         for _ in range(0, IMAGES_IN_LINE - last_row_layout.count()):
             last_row_layout.addWidget(QLabel())
 
+        self.style()
         self.show()
 
         if self.exec_() == QDialog.Rejected:
@@ -70,6 +67,15 @@ class VideoDialog(QDialog):
 
     def set_selected_video(self, video_name: str):
         self.__video_name = video_name
+
+    def style(self):
+        style = """
+                QDialog{
+                    background-color: white;
+                }
+                """
+
+        self.setStyleSheet(style)
 
 
 class ImageButton(QLabel):
