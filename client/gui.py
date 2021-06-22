@@ -1,11 +1,9 @@
-import sys
 import threading
 import time
-
 import numpy as np
 from PyQt5.QtCore import QTimer, Qt
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QLabel, QApplication, QHBoxLayout, QPushButton, QSlider, QWidget, QDialog
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLabel, QPushButton, QSlider, QWidget
 from client import Client
 from videoplayer import VideoPlayer
 import image_functions
@@ -144,18 +142,16 @@ class Window(QWidget):
         self.initUI()
 
     def initUI(self):
-        # slider "things"frames_amount
-        # self.slider.setRange(10, self.video_player.frames_amount)
+        # slider "things" frames_amount
         self.frame_slider.setFocusPolicy(Qt.NoFocus)
         self.frame_slider.setFixedWidth(self.window().width())
-        # self.slider.sliderMoved.connect(self.slider_moved)
-        # self.frame_slider.setPageStep(1)
+
         # what happens when you click "pause"/"start"
         self.pause_start_button.clicked.connect(self.pause_start_click)
         # set labels text
         self.video_length_label.setText(format_time(*self.video_player.video_length))
         self.current_time_label.setText(format_time(0, 0))
-        #
+
         self.resize_slider.setFocusPolicy(Qt.NoFocus)
         self.resize_slider.setFixedWidth(100)
         self.resize_slider.valueChanged.connect(self.resize_frame)
