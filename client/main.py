@@ -1,11 +1,10 @@
 import sys
-import time
 from client import Client
 from videoplayer import VideoPlayer
 from dialogs import VideoDialog
 from gui import Window, AskingForFrameThread
 from ClientConfig import SERVER_IP, SERVER_PORT
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QMessageBox, QWidget
 
 
 def make_client():
@@ -29,16 +28,16 @@ def make_window(client: Client, video_player: VideoPlayer, videos_dialog: VideoD
     return win, asking_frames_thread
 
 
-def wait_for_win_closed(window: Window):
-    while not window.closed_window():
-        time.sleep(0.5)
-
-
 def main():
     app = QApplication(sys.argv)
     # create clients and get available videos
-    client, video_player = make_client()
-    videos = client.ask_for_all_videos_available()
+    try:
+        client, video_player = make_client()
+        videos = client.ask_for_all_videos_available()
+    except ConnectionRefusedError:
+        # if there is not connection with the server (For example, the server is not running).
+        QMessageBox.about(QWidget(), "ERROR", "There is no server available.")
+        return
 
     # choose videos dialog
     videos_dialog = VideoDialog(videos)
