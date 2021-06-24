@@ -8,6 +8,7 @@ import numpy as np
 from ServerConfig import logger, ALL_VIDEOS_DIRECTORIES, get_video_and_thumbnail_path
 import socket_functions
 from socket_functions import read_data_from_socket, send_data_through_socket
+from database import User
 
 
 class ClientThread(threading.Thread):
@@ -47,6 +48,8 @@ class ClientThread(threading.Thread):
         func = data[0]
 
         switch = {
+            socket_functions.CREATE_USER: functools.partial(self.__create_user, data),
+            socket_functions.LOGIN_USER: functools.partial(self.__check_login, data),
             socket_functions.ASK_FOR_VIDEOS_AVAILABLE: self.__get_videos_list,
             socket_functions.ADK_FOR_VIDEO_DETAILS: functools.partial(self.__get_show_details, data),
             socket_functions.ASK_FOR_FRAME: functools.partial(self.__get_frame, data),
@@ -54,6 +57,22 @@ class ClientThread(threading.Thread):
         }
 
         switch[func]()
+
+    def __create_user(self, data):
+        username = data[1]
+        password = data[2]
+        if User.find(username) is None:  # user does not exists - good
+            User.add_user(username, password)
+            send_data_through_socket(self.__sock, [socket_functions.CREATE_USER, True])
+        else:  # username already exists
+            send_data_through_socket(self.__sock, [socket_functions.CREATE_USER, False])
+
+    def __check_login(self, data):
+        username = data[1]
+        password = data[2]
+
+        is_ok = User.valid_user(username, password)
+        send_data_through_socket(self.__sock, [socket_functions.LOGIN_USER, is_ok])
 
     def __get_videos_list(self) -> None:
         """
