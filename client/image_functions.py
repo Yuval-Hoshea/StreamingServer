@@ -4,6 +4,11 @@ from PyQt5.QtGui import QImage
 
 
 def resize_image_to_specific_height(img_arr: np.ndarray, wanted_height: int) -> np.ndarray:
+    """
+    :param img_arr: numpy array of pixels
+    :param wanted_height: the height that we the picture to have.
+    :return: The new image with the wanted height
+    """
     # get the scale
     height, _, _ = img_arr.shape
     scale_percent = wanted_height * 100 / height
@@ -16,6 +21,10 @@ def resize_image_to_specific_height(img_arr: np.ndarray, wanted_height: int) -> 
 
 
 def convert_numpy_array_to_qimage(img_arr: np.ndarray) -> QImage:
+    """
+    :param img_arr: image array of pixels
+    :return: QImage of the image
+    """
     array = np.array(cv2.cvtColor(img_arr, cv2.COLOR_BGR2RGB))
     # convert to QImage
     height, width, channel = array.shape

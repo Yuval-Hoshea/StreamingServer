@@ -35,7 +35,7 @@ class AskingForFrameThread(threading.Thread):
         self.client = client
         self.video_player = video_player
         self.vid_name = vid_name
-        
+        #
         self.__paused = False
         self.__alive = True
 
@@ -69,6 +69,9 @@ class AskingForFrameThread(threading.Thread):
         self.__paused = False
 
     def kill(self):
+        """
+        Kill the thread (Stopping the loop in the thread)
+        """
         self.__alive = False
 
 

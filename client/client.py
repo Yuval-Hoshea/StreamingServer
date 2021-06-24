@@ -21,6 +21,8 @@ class Client:
         self._active_frames_requests = 0
         self._video_thumbnails = {}
         self.server_ended_changing_video_position = False
+        self.created_user = None
+        self.logged_in = None
 
     def threaded_connect_and_listen_to_server(self):
         """
@@ -29,6 +31,22 @@ class Client:
         logger.info(f"Connected to {self._server_addr}.")
         self._sock.connect(self._server_addr)
         threading.Thread(target=self.__listen_to_server, daemon=True).start()
+
+    def create_user(self, username: str, password: str) -> None:
+        """
+        :param username: the username which we create
+        :param password: the password of the username
+        :return: Asking for creating the username. Returns none.
+        """
+        send_data_through_socket(self._sock, [socket_functions.CREATE_USER, username, password])
+
+    def login(self, username: str, password: str):
+        """
+        :param username: the username which we want to login into.
+        :param password: the password of the username
+        :return: Asking for logging to the username. Returns none.
+        """
+        send_data_through_socket(self._sock, [socket_functions.LOGIN_USER, username, password])
 
     def ask_for_all_videos_available(self) -> list:
         """
@@ -108,9 +126,15 @@ class Client:
             self.__handle_data(data)
 
     def __handle_data(self, data):
+        """
+        :param data: the data that the user sent
+        :return: None. Handle the data.
+        """
         func = data[0]
 
         switch = {
+            socket_functions.CREATE_USER: functools.partial(self.__ask_for_creating_user, data),
+            socket_functions.LOGIN_USER: functools.partial(self.__logged_in, data),
             socket_functions.ASK_FOR_VIDEOS_AVAILABLE: functools.partial(self.__ask_for_videos_case, data),
             socket_functions.ADK_FOR_VIDEO_DETAILS: functools.partial(self.__ask_for_details_case, data),
             socket_functions.ASK_FOR_FRAME: functools.partial(self.__ask_for_frame_case, data),
@@ -119,6 +143,14 @@ class Client:
         }
 
         switch[func]()
+
+    def __ask_for_creating_user(self, data: List):
+        added_user = data[1]
+        self.created_user = added_user
+
+    def __logged_in(self, data):
+        is_ok = data[1]
+        self.logged_in = is_ok
 
     def __ask_for_videos_case(self, data: List):
         """

@@ -1,4 +1,3 @@
-import sys
 from collections import deque
 from typing import Tuple
 import cv2
