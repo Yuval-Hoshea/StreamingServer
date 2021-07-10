@@ -1,0 +1,26 @@
+Before running:
+1. If you don't have python on your computer, install it.
+2. Open the cmd window of the main folder which contains: "server", "client", "requirements.txt" and "instructions.txt" (this file).
+3. Type - "pip install virtualenv".
+4. Create a virtual environment by typing - "virtualenv env".
+5. Activate the virtual environment by typing - ".\env\Scripts\activate".
+6. Type - "pip install -r requirements.txt". 
+
+Running the server:
+1. Open the "server" folder and open the ".env" file.
+2. Choose your ip- if you want your server to work only on the current computer, type on IP=, IP=127.0.0.1 . If you want it work on your local network type- IP=0.0.0.0 . 
+3. Choose the port- type PORT=yourportnumber, for example: PORT=11111. Choose a port that is not used. Port numbers are between 0-65535.
+4. Open the cmd window of the main folder which contains: "server", "client", "requirements.txt" and "instructions.txt" (this file).
+5. Activate the virtual environment by typing - ".\env\Scripts\activate".
+6. Work on the "server" folder by typing "cd server".
+7. Run the server by typing "python server.py"
+
+Running the client (You need to run the server before the client):
+1. Open the "client" folder and open the ".env" file.
+2. Check what is the server ip, if the server runs at localhost type IP=127.0.0.1, else type your server ip.
+You can check the ip of the server by typing "ipconfig on the server computer". Type IP=serverip such as IP=10.0.0.1 .
+3. Type the port of the server for example, PORT=11111.
+4. Open the cmd window of the main folder which contains: "server", "client", "requirements.txt" and "instructions.txt" (this file).
+5. Activate the virtual environment by typing - ".\env\Scripts\activate".
+6. Work on the "client" folder by typing "cd client".
+7. Run the client by typing "python client.py"
