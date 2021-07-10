@@ -14,16 +14,6 @@ engine = sqlalchemy.create_engine(DATA_BASE_NAME, connect_args={'check_same_thre
 base.metadata.bind = engine
 session = orm.scoped_session(orm.sessionmaker())(bind=engine)
 
-# after this:
-# base == db.Model
-# session == db.session
-# other db.* values are in sa.*
-# ie: old: db.Column(db.Integer,db.ForeignKey('s.id'))
-#     new: sa.Column(sa.Integer,sa.ForeignKey('s.id'))
-# except relationship, and backref, those are in orm
-# ie: orm.relationship, orm.backref
-# so to define a simple model
-
 
 def hash_password(password: str) -> str:
     return hashlib.sha512(password.encode()).hexdigest()
